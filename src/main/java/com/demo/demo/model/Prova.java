@@ -35,11 +35,10 @@ public class Prova {
     @OneToMany(mappedBy = "prova", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Volta> voltas = new ArrayList<>(this.totalVoltas);
 
-    public Prova( LocalDateTime dataProva, String local, Integer qtdPilotos,
-                 List<String> podio, Integer totalVoltas) {
+    public Prova(LocalDateTime dataProva, String local,
+                  Integer totalVoltas) {
         this.dataProva = dataProva;
         this.local = local;
-        this.podio = podio;
         this.totalVoltas = totalVoltas;
     }
 

@@ -3,7 +3,6 @@ package com.demo.demo.service;
 import com.demo.demo.exceptions.ResourceNotFoundException;
 import com.demo.demo.exceptions.SaveErrorException;
 import com.demo.demo.model.Piloto;
-import com.demo.demo.model.Piloto;
 import com.demo.demo.model.Prova;
 import com.demo.demo.model.Volta;
 import com.demo.demo.model.dto.PilotoDTO;
@@ -13,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,7 +63,8 @@ public class PilotoService implements ICrud<Piloto> {
             List<Volta> sortedVoltas = voltasProva.stream()
                     .sorted(Comparator.comparing(Volta::getTempoTotal))
                     .toList();
-            int place = sortedVoltas.indexOf(piloto) + 1;  //+1 porque contamos os lugares a partir de 1
+            //+1 porque contamos os lugares a partir de 1
+            int place = sortedVoltas.indexOf(piloto) + 1;
 
             if (place <= 3) {
                 places.put(place, places.getOrDefault(place, 0) + 1);

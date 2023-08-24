@@ -3,7 +3,6 @@ package com.demo.demo.service;
 import com.demo.demo.exceptions.ResourceNotFoundException;
 import com.demo.demo.exceptions.SaveErrorException;
 import com.demo.demo.model.Prova;
-import com.demo.demo.model.Volta;
 import com.demo.demo.repository.ProvaRepository;
 import com.demo.demo.service.intefaces.ICrud;
 import com.demo.demo.service.util.Utils;
@@ -12,11 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.List;
 
 import static com.demo.demo.service.util.Utils.setDataQtdPilotos;
 
@@ -36,6 +31,9 @@ public class ProvaService implements ICrud<Prova> {
         List<Prova> data = repository.findAll();
         setDataQtdPilotos(data);
         Utils.setPodio(data);
+        data.forEach(
+                a -> a.setPodio(a.getPodio().subList(0, 3))
+        );
         return ResponseEntity.ok(data);
     }
 

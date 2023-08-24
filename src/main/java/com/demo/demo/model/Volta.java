@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Volta {
+public class Volta implements Comparable<Volta> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -56,5 +56,10 @@ public class Volta {
 
     public void setTempoTotal(LocalTime tempoTotal) {
         this.tempoTotal = tempoTotal;
+    }
+
+    @Override
+    public int compareTo(Volta other) {
+        return this.getTempoTotal().compareTo(other.getTempoTotal());
     }
 }
