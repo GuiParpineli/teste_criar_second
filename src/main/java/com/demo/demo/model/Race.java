@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Prova {
+public class Race {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -32,24 +32,24 @@ public class Prova {
     private Integer totalVoltas = 0;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "prova", orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<Volta> voltas = new ArrayList<>(this.totalVoltas);
+    @OneToMany(mappedBy = "race", orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Lap> laps = new ArrayList<>(this.totalVoltas);
 
-    public Prova(LocalDateTime dataProva, String local,
-                 Integer totalVoltas) {
+    public Race(LocalDateTime dataProva, String local,
+                Integer totalVoltas) {
         this.dataProva = dataProva;
         this.local = local;
         this.totalVoltas = totalVoltas;
     }
 
-    public Prova(Prova prova) {
-        this.id = prova.id;
-        this.dataProva = prova.getDataProva();
-        this.local = prova.getLocal();
-        this.totalVoltas = prova.getTotalVoltas();
-        this.podio = prova.getPodio();
-        this.duracao = prova.getDuracao();
-        this.qtdPilotos = prova.getQtdPilotos();
-        this.voltas = prova.getVoltas();
+    public Race(Race race) {
+        this.id = race.id;
+        this.dataProva = race.getDataProva();
+        this.local = race.getLocal();
+        this.totalVoltas = race.getTotalVoltas();
+        this.podio = race.getPodio();
+        this.duracao = race.getDuracao();
+        this.qtdPilotos = race.getQtdPilotos();
+        this.laps = race.getLaps();
     }
 }

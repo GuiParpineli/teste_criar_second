@@ -2,7 +2,7 @@ package com.demo.demo.service;
 
 import com.demo.demo.exceptions.ResourceNotFoundException;
 import com.demo.demo.exceptions.SaveErrorException;
-import com.demo.demo.model.Volta;
+import com.demo.demo.model.Lap;
 import com.demo.demo.repository.VoltaRepository;
 import com.demo.demo.service.intefaces.ICrud;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,17 +12,17 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class VoltaService implements ICrud<Volta> {
+public class LapService implements ICrud<Lap> {
     private final VoltaRepository repository;
 
     @Autowired
-    public VoltaService(VoltaRepository repository) {
+    public LapService(VoltaRepository repository) {
         this.repository = repository;
     }
 
     @Override
     public ResponseEntity<?> getAll() {
-        List<Volta> data = repository.findAll();
+        List<Lap> data = repository.findAll();
         return ResponseEntity.ok(repository.findAll());
     }
 
@@ -33,32 +33,32 @@ public class VoltaService implements ICrud<Volta> {
     }
 
     @Override
-    public ResponseEntity<?> save(Volta input) throws SaveErrorException {
+    public ResponseEntity<?> save(Lap input) throws SaveErrorException {
         try {
             repository.save(input);
         } catch (Exception e) {
-            throw new SaveErrorException("Erro, Volta nao salva" + e.getMessage());
+            throw new SaveErrorException("Erro, Lap nao salva" + e.getMessage());
         }
         return ResponseEntity.ok("Salvo com sucesso");
     }
 
-    public ResponseEntity<?> saveAll(List<Volta> voltas) throws SaveErrorException {
+    public ResponseEntity<?> saveAll(List<Lap> laps) throws SaveErrorException {
         try {
-            repository.saveAll(voltas);
+            repository.saveAll(laps);
         } catch (Exception e) {
-            throw new SaveErrorException("Erro, Volta nao salva" + e.getMessage());
+            throw new SaveErrorException("Erro, Lap nao salva" + e.getMessage());
         }
         return ResponseEntity.ok("Salvo com sucesso");
     }
 
     @Override
-    public ResponseEntity<?> update(Volta input) throws SaveErrorException, ResourceNotFoundException {
+    public ResponseEntity<?> update(Lap input) throws SaveErrorException, ResourceNotFoundException {
         if (repository.findById(input.getId()).isEmpty())
             throw new ResourceNotFoundException("Nenhuma volta com id informado");
         try {
             repository.saveAndFlush(input);
         } catch (Exception e) {
-            throw new SaveErrorException("Erro, Volta nao atualizada" + e.getMessage());
+            throw new SaveErrorException("Erro, Lap nao atualizada" + e.getMessage());
         }
         return ResponseEntity.ok("Atulizado com sucesso");
     }

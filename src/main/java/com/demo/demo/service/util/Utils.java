@@ -1,22 +1,22 @@
 package com.demo.demo.service.util;
 
-import com.demo.demo.model.Prova;
-import com.demo.demo.model.Volta;
+import com.demo.demo.model.Lap;
+import com.demo.demo.model.Race;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class Utils {
-    public static void setPodio(List<Prova> data) {
+    public static void setPodio(List<Race> data) {
         data.forEach(a -> {
             HashMap<String, LocalTime> podium = new LinkedHashMap<>();
-            a.getVoltas().forEach(v -> podium.put(v.getPiloto().getName(), v.getTempoTotal()));
+            a.getLaps().forEach(v -> podium.put(v.getPilot().getName(), v.getTempoTotal()));
             List<Map.Entry<String, LocalTime>> list = new ArrayList<>(podium.entrySet());
             list.sort(Map.Entry.comparingByValue());
 
-            Optional<LocalTime> maxTempoOptional = a.getVoltas().stream()
-                    .map(Volta::getTempoTotal)
+            Optional<LocalTime> maxTempoOptional = a.getLaps().stream()
+                    .map(Lap::getTempoTotal)
                     .max(Comparator.comparingLong(t -> t.until(LocalTime.MIDNIGHT, ChronoUnit.SECONDS)));
 
             maxTempoOptional.ifPresent(a::setDuracao);
@@ -37,8 +37,8 @@ public class Utils {
         return finalPodio;
     }
 
-    public static void setDataQtdPilotos(List<Prova> data) {
-        data.forEach(a -> a.setQtdPilotos(a.getVoltas().size()));
+    public static void setDataQtdPilotos(List<Race> data) {
+        data.forEach(a -> a.setQtdPilotos(a.getLaps().size()));
     }
 
 }

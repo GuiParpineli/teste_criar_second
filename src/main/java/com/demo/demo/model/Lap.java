@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Volta implements Comparable<Volta> {
+public class Lap implements Comparable<Lap> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -28,18 +27,18 @@ public class Volta implements Comparable<Volta> {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "piloto_id")
-    private Piloto piloto;
+    private Pilot pilot;
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "prova_id")
-    private Prova prova;
+    private Race race;
 
-    public Volta(Integer id, List<LocalTime> tempo, Piloto piloto, Prova prova) {
+    public Lap(Integer id, List<LocalTime> tempo, Pilot pilot, Race race) {
         this.id = id;
         this.tempo = tempo;
-        this.piloto = piloto;
-        this.prova = prova;
+        this.pilot = pilot;
+        this.race = race;
         this.tempoTotal = this.tempo.get(0);
         for (int i = 0; i < this.getTempo().size(); i++) {
             for (int j = i + 1; j < this.getTempo().size(); j++) {
@@ -59,7 +58,7 @@ public class Volta implements Comparable<Volta> {
     }
 
     @Override
-    public int compareTo(Volta other) {
+    public int compareTo(Lap other) {
         return this.getTempoTotal().compareTo(other.getTempoTotal());
     }
 }

@@ -15,18 +15,18 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Piloto {
+public class Pilot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id = 0;
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "piloto", orphanRemoval = true)
-    private List<Volta> voltas = new ArrayList<>();
+    @OneToMany(mappedBy = "pilot", orphanRemoval = true)
+    private List<Lap> laps = new ArrayList<>();
 
 
-    public Piloto(String name) {
+    public Pilot(String name) {
         this.name = name;
     }
 }

@@ -2,21 +2,19 @@ package com.demo.demo.controller;
 
 import com.demo.demo.exceptions.ResourceNotFoundException;
 import com.demo.demo.exceptions.SaveErrorException;
-import com.demo.demo.model.Volta;
-import com.demo.demo.service.VoltaService;
+import com.demo.demo.model.Pilot;
+import com.demo.demo.service.PilotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/volta")
-public class VoltaController {
-    private final VoltaService service;
+@RequestMapping("/piloto")
+public class PilotController {
+    private final PilotService service;
 
     @Autowired
-    public VoltaController(VoltaService service) {
+    public PilotController(PilotService service) {
         this.service = service;
     }
 
@@ -28,16 +26,22 @@ public class VoltaController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Integer id) throws ResourceNotFoundException {
         return service.getbyID(id);
+
+    }
+
+    @GetMapping("byname/{name}")
+    public ResponseEntity<?> getById(@PathVariable String name) throws ResourceNotFoundException {
+        return service.getByPilotoName(name);
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody Volta volta) throws SaveErrorException {
-        return service.save(volta);
+    public ResponseEntity<?> save(@RequestBody Pilot pilot) throws SaveErrorException {
+        return service.save(pilot);
     }
 
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody Volta volta) throws SaveErrorException, ResourceNotFoundException {
-        return service.update(volta);
+    public ResponseEntity<?> update(@RequestBody Pilot pilot) throws SaveErrorException, ResourceNotFoundException {
+        return service.update(pilot);
     }
 
     @DeleteMapping("{id}")

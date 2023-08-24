@@ -1,8 +1,8 @@
 package com.demo.demo;
 
-import com.demo.demo.model.Piloto;
-import com.demo.demo.model.Prova;
-import com.demo.demo.model.Volta;
+import com.demo.demo.model.Lap;
+import com.demo.demo.model.Pilot;
+import com.demo.demo.model.Race;
 import com.demo.demo.repository.PilotoRepository;
 import com.demo.demo.repository.ProvaRepository;
 import com.demo.demo.repository.VoltaRepository;
@@ -37,7 +37,7 @@ public class DataLoader implements ApplicationRunner {
     public void run(ApplicationArguments args) {
 
         provaRepository.save(
-                new Prova(
+                new Race(
                         LocalDateTime.now(),
                         "SP",
                         4
@@ -45,38 +45,38 @@ public class DataLoader implements ApplicationRunner {
         );
 
         pilotoRepository.save(
-                new Piloto(
+                new Pilot(
                         "F.MASSA"
                 )
         );
         pilotoRepository.save(
-                new Piloto(
+                new Pilot(
                         "R.BARRICHELLO"
                 )
         );
         pilotoRepository.save(
-                new Piloto(
+                new Pilot(
                         "K.RAIKKONEN"
                 )
         );
         pilotoRepository.save(
-                new Piloto(
+                new Pilot(
                         "M.WEBBER"
                 )
         );
         pilotoRepository.save(
-                new Piloto(
+                new Pilot(
                         "F.ALONSO"
                 )
         );
         pilotoRepository.save(
-                new Piloto(
+                new Pilot(
                         "S.VETTEL"
                 )
         );
 
         voltaRepository.save(
-                new Volta(0,
+                new Lap(0,
                         List.of(
                                 LocalTime.parse("00:01:02.852"),
                                 LocalTime.parse("00:01:03.170"),
@@ -88,7 +88,7 @@ public class DataLoader implements ApplicationRunner {
                 )
         );
         voltaRepository.save(
-                new Volta(0,
+                new Lap(0,
                         List.of(
                                 LocalTime.parse("00:01:04.352"),
                                 LocalTime.parse("00:01:04.002"),
@@ -100,7 +100,7 @@ public class DataLoader implements ApplicationRunner {
                 )
         );
         voltaRepository.save(
-                new Volta(0,
+                new Lap(0,
                         List.of(
                                 LocalTime.parse("00:01:04.108"),
                                 LocalTime.parse("00:01:03.982"),
@@ -112,7 +112,7 @@ public class DataLoader implements ApplicationRunner {
                 )
         );
         voltaRepository.save(
-                new Volta(0,
+                new Lap(0,
                         List.of(
                                 LocalTime.parse("00:01:04.414"),
                                 LocalTime.parse("00:01:04.805"),
@@ -124,7 +124,7 @@ public class DataLoader implements ApplicationRunner {
                 )
         );
         voltaRepository.save(
-                new Volta(0,
+                new Lap(0,
                         List.of(
                                 LocalTime.parse("00:01:18.456"),
                                 LocalTime.parse("00:01:07.011"),
@@ -136,7 +136,7 @@ public class DataLoader implements ApplicationRunner {
                 )
         );
         voltaRepository.save(
-                new Volta(0,
+                new Lap(0,
                         List.of(
                                 LocalTime.parse("00:03:31.315"),
                                 LocalTime.parse("00:01:37.864"),
@@ -147,7 +147,7 @@ public class DataLoader implements ApplicationRunner {
                 )
         );
 
-        List<Prova> data = provaRepository.findAll();
+        List<Race> data = provaRepository.findAll();
         setDataQtdPilotos(data);
         Utils.setPodio(data);
         provaRepository.saveAll(data);
