@@ -6,6 +6,8 @@ import com.demo.demo.model.Prova;
 import com.demo.demo.model.Volta;
 import com.demo.demo.repository.ProvaRepository;
 import com.demo.demo.service.intefaces.ICrud;
+import com.demo.demo.service.util.Utils;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,9 +18,13 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.demo.demo.service.util.Utils.setDataQtdPilotos;
+
 @Service
+@Transactional
 public class ProvaService implements ICrud<Prova> {
     private final ProvaRepository repository;
+    private Utils utils;
 
     @Autowired
     public ProvaService(ProvaRepository repository) {
@@ -29,41 +35,8 @@ public class ProvaService implements ICrud<Prova> {
     public ResponseEntity<?> getAll() {
         List<Prova> data = repository.findAll();
         setDataQtdPilotos(data);
-        setPodio(data);
+        Utils.setPodio(data);
         return ResponseEntity.ok(data);
-    }
-
-    private void setDataQtdPilotos(List<Prova> data) {
-        data.forEach(a -> a.setQtdPilotos(a.getVoltas().size()));
-    }
-
-    private void setPodio(List<Prova> data) {
-        data.forEach(a -> {
-            HashMap<String, LocalTime> podium = new LinkedHashMap<>();
-            a.getVoltas().forEach(v -> podium.put(v.getPiloto().getName(), v.getTempoTotal()));
-            List<Map.Entry<String, LocalTime>> list = new ArrayList<>(podium.entrySet());
-            list.sort(Map.Entry.comparingByValue());
-
-            Optional<LocalTime> maxTempoOptional = a.getVoltas().stream()
-                    .map(Volta::getTempoTotal)
-                    .max(Comparator.comparingLong(t -> t.until(LocalTime.MIDNIGHT, ChronoUnit.SECONDS)));
-
-            maxTempoOptional.ifPresent(a::setDuracao);
-
-            Map<String, LocalTime> sortedPodium = new LinkedHashMap<>();
-            for (Map.Entry<String, LocalTime> entry : list) {
-                sortedPodium.put(entry.getKey(), entry.getValue());
-            }
-            a.setPodio(getFinalPodio(sortedPodium));
-        });
-    }
-
-    private List<String> getFinalPodio(Map<String, LocalTime> sortedPodium) {
-        List<String> finalPodio = new ArrayList<>(sortedPodium.keySet().stream().toList());
-        for (int counter = 0; counter < finalPodio.size(); counter++) {
-            finalPodio.set(counter, (counter + 1) + ". " + finalPodio.get(counter));
-        }
-        return finalPodio;
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.demo.demo.model.Piloto;
 import com.demo.demo.model.Piloto;
 import com.demo.demo.model.Prova;
 import com.demo.demo.model.Volta;
+import com.demo.demo.model.dto.PilotoDTO;
 import com.demo.demo.repository.PilotoRepository;
 import com.demo.demo.service.intefaces.ICrud;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,8 @@ public class PilotoService implements ICrud<Piloto> {
                 .toList();
 
         Map<Integer, Integer> positions = pilotPlacements(piloto);
-        return ResponseEntity.ok();
+
+        return ResponseEntity.ok(new PilotoDTO(provas, positions));
     }
 
     public Map<Integer, Integer> pilotPlacements(Piloto piloto) {

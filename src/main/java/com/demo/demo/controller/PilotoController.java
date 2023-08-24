@@ -26,6 +26,12 @@ public class PilotoController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Integer id) throws ResourceNotFoundException {
         return service.getbyID(id);
+
+    }
+
+    @GetMapping("byname/{name}")
+    public ResponseEntity<?> getById(@PathVariable String name) throws ResourceNotFoundException {
+        return service.getByPilotoName(name);
     }
 
     @PostMapping

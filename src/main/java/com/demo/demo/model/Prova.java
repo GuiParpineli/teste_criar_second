@@ -31,9 +31,8 @@ public class Prova {
 
     private Integer totalVoltas = 0;
 
-
     @JsonIgnore
-    @OneToMany(mappedBy = "prova", orphanRemoval = true)
+    @OneToMany(mappedBy = "prova", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Volta> voltas = new ArrayList<>(this.totalVoltas);
 
     public Prova( LocalDateTime dataProva, String local, Integer qtdPilotos,
