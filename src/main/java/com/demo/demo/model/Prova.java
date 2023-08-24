@@ -36,10 +36,20 @@ public class Prova {
     private List<Volta> voltas = new ArrayList<>(this.totalVoltas);
 
     public Prova(LocalDateTime dataProva, String local,
-                  Integer totalVoltas) {
+                 Integer totalVoltas) {
         this.dataProva = dataProva;
         this.local = local;
         this.totalVoltas = totalVoltas;
     }
 
+    public Prova(Prova prova) {
+        this.id = prova.id;
+        this.dataProva = prova.getDataProva();
+        this.local = prova.getLocal();
+        this.totalVoltas = prova.getTotalVoltas();
+        this.podio = prova.getPodio();
+        this.duracao = prova.getDuracao();
+        this.qtdPilotos = prova.getQtdPilotos();
+        this.voltas = prova.getVoltas();
+    }
 }

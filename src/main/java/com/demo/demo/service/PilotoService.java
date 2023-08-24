@@ -12,10 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,32 +45,33 @@ public class PilotoService implements ICrud<Piloto> {
                 .distinct()
                 .toList();
 
-        Map<Integer, Integer> positions = pilotPlacements(piloto);
+        provas.forEach(
+                a -> {
+                    Optional<String> matchedPilot = a.getPodio().stream()
+                            .filter(s -> s.contains(piloto.getName()))
+                            .findFirst();
 
+                    matchedPilot.ifPresent(s -> a.setPodio(Collections.singletonList(s)));
+                }
+        );
+
+
+        Pattern pattern = Pattern.compile("^\\d+");
+        Map<Integer, Integer> positions = provas.stream()
+                .flatMap(podio -> podio.getPodio().stream())
+                .map(item -> {
+                    Matcher matcher = pattern.matcher(item);
+                    return matcher.find() ? Integer.parseInt(matcher.group()) : null;
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toMap(
+                        pos -> pos,
+                        pos -> 1,
+                        Integer::sum
+                ));
         return ResponseEntity.ok(new PilotoDTO(provas, positions));
     }
 
-    public Map<Integer, Integer> pilotPlacements(Piloto piloto) {
-        Map<Integer, Integer> places = new HashMap<>();
-
-        List<Volta> voltas = piloto.getVoltas();
-
-        Map<Prova, List<Volta>> groupedByProva = voltas.stream()
-                .collect(Collectors.groupingBy(Volta::getProva));
-
-        for (List<Volta> voltasProva : groupedByProva.values()) {
-            List<Volta> sortedVoltas = voltasProva.stream()
-                    .sorted(Comparator.comparing(Volta::getTempoTotal))
-                    .toList();
-            //+1 porque contamos os lugares a partir de 1
-            int place = sortedVoltas.indexOf(piloto) + 1;
-
-            if (place <= 3) {
-                places.put(place, places.getOrDefault(place, 0) + 1);
-            }
-        }
-        return places;
-    }
 
     @Override
     public ResponseEntity<?> save(Piloto input) throws SaveErrorException {

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.demo.demo.service.util.Utils.setDataQtdPilotos;
 
@@ -19,7 +20,6 @@ import static com.demo.demo.service.util.Utils.setDataQtdPilotos;
 @Transactional
 public class ProvaService implements ICrud<Prova> {
     private final ProvaRepository repository;
-    private Utils utils;
 
     @Autowired
     public ProvaService(ProvaRepository repository) {
@@ -31,10 +31,10 @@ public class ProvaService implements ICrud<Prova> {
         List<Prova> data = repository.findAll();
         setDataQtdPilotos(data);
         Utils.setPodio(data);
-        data.forEach(
-                a -> a.setPodio(a.getPodio().subList(0, 3))
-        );
-        return ResponseEntity.ok(data);
+        List<Prova> dataCopy = data.stream().map(Prova::new)
+                .collect(Collectors.toList());
+        dataCopy.forEach(a -> a.setPodio(a.getPodio().subList(0, 3)));
+        return ResponseEntity.ok(dataCopy);
     }
 
     @Override
